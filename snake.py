@@ -43,21 +43,18 @@ def run_game():	# This function will run a single round of the game
 			agentpos = agentpos - action	# will move for dims (30) pixels,
 			count += 1	# and then it will choose the next direction.
 		else:
-			action = ai.action(agentpos, applepos) 
-			dir = np.array((float(action[0] < action[1]), float(action[1] >= action[0])))
-			count = 0
+			action = ai.action(agentpos, applepos)	# Choose next direction
+			count = 0	# Reset the count
 		agent_rect = pygame.Rect(agentpos[0]-dims/2, agentpos[1]-dims/2, dims, dims) # Rectangle for the agent
 		apple_rect = pygame.Rect(applepos[0]-dims/2, applepos[1]-dims/2, dims, dims) # Rectangle for the apple
-		energy_bar = pygame.Rect(10, 10, energy * 10, 10)
+		energy_bar = pygame.Rect(10, 10, energy * 10, 10)	# Rectangle for
+															# energy bar
+		if agent_rect.colliderect(apple_rect):	# Win condition
+			energy += 15	# Add to energy
+			return True		# We won!
+		if energy <= 0:		# Lose condition
+			return False	# We lost
 		
-
-		if agent_rect.colliderect(apple_rect):
-			energy += 15
-			return True
-		if energy <= 0:
-			return False
-		
-	
 		screen.fill((255, 255, 255))	# Fill the background with white
 	
 		pygame.draw.rect(screen, (0, 255, 0),	# Draw a square where the worm is
@@ -71,7 +68,6 @@ def run_game():	# This function will run a single round of the game
 								# it the screen goes black
 	
 run_game()
-	
 # Done! Time to quit.
 
 pygame.quit()

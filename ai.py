@@ -2,7 +2,7 @@ import numpy as np
 print("AI imported")
 
 def action(me, target):
-	dif  = torusvecmin(me, target, 500)
+	dif  = torusvecmin(me, target, 500) # Call the function we define below
 	out = (float(abs(dif[0]) > abs(dif[1]))*sign(dif[0]), float(abs(dif[0]) <= abs(dif[1]))*sign(dif[1]))
 	"""
 			The above is some dark magic. Python casts booleans to one and zero,
