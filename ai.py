@@ -17,24 +17,25 @@ def action(me, target):
 	"""
 	return out
 
-def sign(x):
-	if x == 0:
-		return x
-	return x/abs(x)
+def sign(x):		
+	""" Function that returns the sign of the input, or 0 when the input
+	vanishes"""
+	if x == 0:		
+		return x	# We can't divide by 0, so return zero if the input is 0
+	return x/abs(x)	# Return x/|X|
 
 def torusvecmin(a, b, loop):
-	lengths  = []
-	vectors  = []
-	print(a)
-	print(b)
-	for i in [-500, 0, 500]:
-		for j in (-500, 0, 500):
-			vec = np.array((i, j))
-			vector = a-b-vec
-			vectors.append(vector)
-			lengths.append(abs(np.linalg.norm(vector)))
-	print(vectors)
-	ret = (vectors[lengths.index(min(lengths))])
-	return ret
+	lengths  = []	# Initialize empty list of lengths
+	vectors  = []	# Initialize empty list of vectors
+	for i in [-500, 0, 500]:		# Loop through the possible offsets for the
+		for j in (-500, 0, 500):	# surface of the torus
+			vec = np.array((i, j))	# Create a vector of the offsets
+			vector = a-b-vec	# Find the difference between the first and
+								# second vectors after applying the offset 
+			vectors.append(vector)	# Append this to the list of vectors
+			lengths.append(abs(np.linalg.norm(vector))) # Append the norm of
+														# this vector to the 
+														# list of lengths
+	return (vectors[lengths.index(min(lengths))])	# Return the shortest vector
 
 

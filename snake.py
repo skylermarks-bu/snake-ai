@@ -1,27 +1,28 @@
-import pygame 
-import numpy as np
-import ai
-import time
+import pygame	# Our graphics library
+import numpy as np	# To deal with vectors
+import ai	# Import the script ai.py
+import time	# For time.sleep
 
-pygame.init()
+pygame.init()	# Start the graphics library
 
-screen = pygame.display.set_mode([500, 500])
-running = True
-
-
+screen = pygame.display.set_mode([500, 500])	# Generate a 500x500 window
 
 dims = 30		# Set the width and height of the squares 
 
-
 def run_game():	# This function will run a single round of the game
-	global dims
-	energy = 11
-	count = 0
+	energy = 11	# Initialize energy to 11
+	count = 0	# Dummy variable for use later
 	agentpos = np.array((400, 100))	#The position of the worm is a vector in R2, or a touple
 	applepos = np.array((400, 400))	#with two values
-	action = ai.action(agentpos, applepos) 
+	action = ai.action(agentpos, applepos)	# 
 	while True:
-		time.sleep(0.01)
+		time.sleep(0.01)	# We want to move at a reasonable pace. This is 
+							# actually a very bad way to do this, as the
+							# program will still speed up and slow down as the
+							# processing speed changes. I'll use pygame's
+							# internal clock to set a more consistent FPS later
+							# when it becomes a problem due to intensive
+							# computation. For now it's fine though.
 
 		if agentpos[0] > 500:	# Wrap on a torus
 			agentpos[0] = 0		# This is quite crude at the moment; eventually
@@ -33,14 +34,14 @@ def run_game():	# This function will run a single round of the game
 		if agentpos[1] < 0:	
 			agentpos[1] = 500		
 
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
+		for event in pygame.event.get():	# If we tell the window to close,
+			if event.type == pygame.QUIT:	# close the window
 				return False
 	
-		if count < dims:
-			energy -= 1/dims
-			agentpos = agentpos - action
-			count += 1
+		if count < dims:	# Here we're ensuring that it only changes direction
+			energy -= 1/dims	# every time it moves it's own length. So it
+			agentpos = agentpos - action	# will move for dims (30) pixels,
+			count += 1	# and then it will choose the next direction.
 		else:
 			action = ai.action(agentpos, applepos) 
 			dir = np.array((float(action[0] < action[1]), float(action[1] >= action[0])))
